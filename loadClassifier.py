@@ -1,7 +1,9 @@
-#sentiment analysis
+#pickle used to load classifier - and run classification
+
 import nltk
 import random
 from nltk.corpus import movie_reviews
+import pickle
 
 #documents = [(list(movie_reviews.words(fileid)), category)
 #             for category in movie_reviews.categories()
@@ -49,8 +51,10 @@ for (rev, category) in documents:
 training_set = featuresets[:1900] #first 1900 documents
 testing_set = featuresets[1900:] #last 1900 documents
 
-# posterior = prior occurences * likelihood / evidence
-classifier = nltk.NaiveBayesClassifier.train(training_set)
+#load classifier
+classifier_f = open('naivebayes.pickle', 'rb')
+classifier = pickle.load(classifier_f)
+classifier_f.close()
+
 print("Naive Bayes Algo accuracy:", (nltk.classify.accuracy(classifier, testing_set))*100)
 classifier.show_most_informative_features(15) #prints most informative features
-

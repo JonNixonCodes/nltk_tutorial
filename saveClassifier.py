@@ -1,7 +1,9 @@
-#sentiment analysis
+#pickle used to save classifier - saved as python object
+
 import nltk
 import random
 from nltk.corpus import movie_reviews
+import pickle
 
 #documents = [(list(movie_reviews.words(fileid)), category)
 #             for category in movie_reviews.categories()
@@ -54,3 +56,7 @@ classifier = nltk.NaiveBayesClassifier.train(training_set)
 print("Naive Bayes Algo accuracy:", (nltk.classify.accuracy(classifier, testing_set))*100)
 classifier.show_most_informative_features(15) #prints most informative features
 
+# save classifier
+save_classifier = open("naivebayes.pickle", "wb")
+pickle.dump(classifier, save_classifier)
+save_classifier.close()
