@@ -67,12 +67,12 @@ for w in short_neg_words:
 # frequency distribution of all words
 all_words = nltk.FreqDist(all_words)
 # 5000 most common words, 5000 feature set
-word_features = list(all_words.keys())[:2500]
+word_features = list(all_words.keys())[:2000]
 
 def find_features(document):
-    words = set(document) #converting a list to a set means that repeating elements are removed (term presence)
+    words = word_tokenize(document)
     features = {} #empty dictionary
-    # features are a dictionary of the top 3000 words and whether they exist or not in the document
+    # features are a dictionary of the top 2000 words and whether they exist or not in the document
     for w in word_features:
         features[w] = (w in words)
         
@@ -91,11 +91,7 @@ training_set = featuresets[:10000] #first 10000 documents
 testing_set = featuresets[10000:] #remainder
 
 # posterior = prior occurences * likelihood / evidence
-#classifier = nltk.NaiveBayesClassifier.train(training_set)
-
-classifier_f = open('naivebayes.pickle', 'rb')
-classifier = pickle.load(classifier_f)
-classifier_f.close()
+classifier = nltk.NaiveBayesClassifier.train(training_set)
 
 print("Original Naive Bayes Algo accuracy:", (nltk.classify.accuracy(classifier, testing_set))*100)
 classifier.show_most_informative_features(15) #prints most informative features
@@ -103,10 +99,6 @@ classifier.show_most_informative_features(15) #prints most informative features
 MNB_classifier = SklearnClassifier(MultinomialNB())
 MNB_classifier.train(training_set)
 print('MNB_classifier accuracy:', (nltk.classify.accuracy(MNB_classifier, testing_set))*100)
-
-#GaussianNB_classifier = SklearnClassifier(GaussianNB())
-#GaussianNB_classifier.train(training_set)
-#print('GaussianNB_classifier accuracy:', (nltk.classify.accuracy(GaussianNB_classifier, testing_set))*100)
 
 BernoulliNB_classifier  = SklearnClassifier(BernoulliNB())
 BernoulliNB_classifier.train(training_set)
